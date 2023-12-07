@@ -1,6 +1,10 @@
 fun main() {
     fun part1(input: List<String>): Int {
-        return input.size
+        return input.sumOf { line ->
+            val firstDigit = line.firstOrNull { it.isDigit() }?.digitToIntOrNull() ?: 0
+            val lastDigit = line.lastOrNull { it.isDigit() }?.digitToIntOrNull() ?: 0
+            firstDigit * 10 + lastDigit
+        }
     }
 
     fun part2(input: List<String>): Int {
