@@ -1,12 +1,23 @@
 fun main() {
     val input = readInput("Day02")
     part1(input).println()
+    part2(input).println()
 }
 
 private fun part1(input: List<String>): Int {
     return parseGames(input)
         .filter { game -> game.sets.all { it.meetsConstraint(gameConstraint) } }
         .sumOf { it.id }
+}
+
+private fun part2(input: List<String>): Int {
+    return parseGames(input)
+        .sumOf { game ->
+            val maxReds = game.sets.maxOf { it.reds }
+            val maxGreens = game.sets.maxOf { it.greens }
+            val maxBlues = game.sets.maxOf { it.blues }
+            maxReds * maxGreens * maxBlues
+        }
 }
 
 private val gameConstraint = GameSet(12, 13, 14)
