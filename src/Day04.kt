@@ -3,6 +3,7 @@ import kotlin.math.pow
 fun main() {
     val input = readInput("Day04")
     part1(input).println()
+    part2(input).println()
 }
 
 private fun part1(input: List<String>): Int {
@@ -13,6 +14,25 @@ private fun part1(input: List<String>): Int {
         }
         .map { 2f.pow(it - 1).toInt() }
         .sum()
+}
+
+private fun part2(input: List<String>): Int {
+    val map = input.asSequence()
+        .map { parseCard(it) }
+        .fold(mutableMapOf<Int, Int>()) { acc, (id, winning, other) ->
+            val thisCount = acc[id]?.let { it + 1 } ?: 1
+            acc[id] = thisCount
+            val count = other.count { it in winning }
+            (id + 1..id + count).map { index ->
+                if (acc.containsKey(index)) {
+                    acc[index] = acc[index]!! + thisCount
+                } else {
+                    acc[index] = thisCount
+                }
+            }
+            acc
+        }
+    return map.values.sum()
 }
 
 private data class Card(
